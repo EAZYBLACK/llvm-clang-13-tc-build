@@ -21,7 +21,6 @@ for arg in "$@"; do
     case "${arg}" in
         "--all-opts")
             POLLY_OPT=1
-            BOLT_OPT=1
             LLVM_OPT=1
             AVX_OPT=1
             ;;
@@ -33,9 +32,6 @@ for arg in "$@"; do
             ;;
         "--polly-opt")
             POLLY_OPT=1
-            ;;
-        "--bolt-opt")
-            BOLT_OPT=1
             ;;
         "--llvm-opt")
             LLVM_OPT=1
@@ -233,21 +229,6 @@ echo "Starting LLVM Build"
 # Where all relevant build-related repositories are cloned.
 if [[ -d ${LLVM_DIR} ]]; then
     echo "Existing llvm source found. Fetching new changes"
-    cd "${LLVM_DIR}"
-    if [[ ${SHALLOW_CLONE} -eq 1 ]]; then
-        llvm_fetch "fetch" "--depth=1"
-        git reset --hard FETCH_HEAD
-        git clean -dfx
-    else
-        is_shallow=$(git rev-parse --is-shallow-repository 2>/dev/null)
-        if [ "$is_shallow" = "true" ]; then
-            llvm_fetch "fetch" "--depth=1"
-            git reset --hard FETCH_HEAD
-            git clean -dfx
-        else
-            llvm_fetch "pull"
-        fi
-    fi
     cd "${BUILDDIR}"
 else
     echo "Cloning llvm project repo"

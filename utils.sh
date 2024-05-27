@@ -55,7 +55,7 @@ export CI=0
 
 llvm_fetch() {
 
-    if ! git "$1" https://github.com/llvm/llvm-project.git "$2"; then
+    if ! git "$1" https://github.com/llvm/llvm-project.git "$2" -b release/13.x; then
         echo "llvm-project git ${1}: Failed" >&2
         exit 1
     fi
